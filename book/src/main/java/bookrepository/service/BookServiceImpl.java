@@ -1,12 +1,12 @@
 package bookrepository.service;
 
+import bookrepository.exception.ApiException;
 import bookrepository.model.Book;
 import bookrepository.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -20,8 +20,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> getBookById(Long id) {
-        return bookRepository.findById(id);
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Не удалось найти книгу с идентификатором " + id, 404));
     }
 
     @Override
